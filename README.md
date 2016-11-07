@@ -4,6 +4,10 @@ Instalar rabbitmq
 
 	sudo apt-get install rabbitmq-server
 
+Instalar redis
+
+	https://www.digitalocean.com/community/tutorials/how-to-install-and-use-redis
+
 Los siguientes comandos deben correrse los 3 al tiempo
 en ese orden respectivamente
 
