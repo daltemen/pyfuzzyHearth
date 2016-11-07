@@ -80,7 +80,7 @@ def obtener_pulso_mongo():
 @celery.task
 def obtener_pulso_redis():
 	contador = 0
-	query =	r.zrangebyscore('prueba', r.time()[0]-60, r.time()[0])
+	query =	r.zrangebyscore('prueba', r.time()[0]-60, r.time()[0]-2)
 	print ">>>>>> LEN " , len(query)
 	for document in query:
 		document_json = json.loads(document)
