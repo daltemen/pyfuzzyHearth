@@ -1,9 +1,12 @@
 import os
 import time
+import json
 from datetime import datetime, timedelta
+import redis
 import pymongo
 from bson.json_util import dumps, loads
 
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
 con = pymongo.MongoClient(connect=False)
 #database = con["prueba"]
 database = con["test"]
@@ -27,4 +30,11 @@ def obtener_pulso_mongo():
 	print ">>>>>> query"
 	print query_result
 
-obtener_pulso_mongo()
+def obtener_pulso_redis():
+	data = json.dumps({"valor":1,"llegada":"fecha_cualquiera"})
+	r.zadd('prueba',7,data)
+	query =	r.zrangebyscore('prueba', 6, 7)
+	process_query = json.loads(query)
+	print query
+
+obtener_pulso_redis()
