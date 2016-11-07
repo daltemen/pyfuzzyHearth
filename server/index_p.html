@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Simple Websocket Example</title>
+    <meta name="author" content="Can Kavaklıoğlu">
+  </head>
+
+  <body>
+    Heart Rate in console persistent
+    
+    
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
+
+    <script>
+
+
+      $(document).ready(function () {
+          if ("WebSocket" in window){
+            websocket = true;
+          }else{
+            // no web socket support
+            websocket = false;
+          }
+
+          var msg = {'event': 'register', };
+          ws_send(msg);
+      }); // ready end
+
+
+
+
+      function myfunction(){
+          msg = { event: 'x', some_data: 'hello websocket world', };
+          ws_send(msg);
+      }
+
+
+
+
+      function ws_send(msg){
+        if( websocket == true ){
+          // if ws is not open call open_ws, which will call ws_send back
+          if( typeof(ws) == 'undefined' || ws.readyState === undefined || ws.readyState > 1){
+            open_ws(msg);
+          }else{
+            ws.send( JSON.stringify(msg) );
+            console.log("ws_send sent");
+          }
+        }
+      }
+
+
+
+
+      function open_ws(msg){
+         if( typeof(ws) == 'undefined' || ws.readyState === undefined || ws.readyState > 1){
+           // websocket on same server with address /websocket
+           ws = new WebSocket("ws://52.43.170.107:3000/websocket");
+              //ws = new WebSocket("ws:localhost:3000/websocket");
+             ws.onopen = function(){
+                 // Web Socket is connected, send data using send()
+                 console.log("ws open");
+                 if( msg.length != 0 ){
+                    ws_send(msg);
+                  }
+             };
+
+             ws.onmessage = function (evt){
+                 console.log("Aqui llega la hora exacta");
+                 console.log(moment().format('h:mm:ss'));
+                 var received_msg = evt.data;
+                 console.log(evt.data);
+                 msg = JSON.parse(evt.data);
+                 console.log(msg.var);
+                 console.log(moment().format('h:mm:ss'));
+             };
+
+             ws.onclose = function(){ 
+                 // websocket is closed, re-open
+                 console.log("Connection is closed... reopen");
+                 var msg = { event: 'register', };
+                 setTimeout( function(){ws_send(msg);}, 1000 );
+             };
+         }
+      }
+
+      function pulse() {
+          $('#seventyfive img').animate(
+              { 
+                  width: $('#seventyfive img').width() -20,
+                  height: $('#seventyfive img').height() -20,
+                  'font-size': '140px',
+                  opacity: 0.5
+              }, 200, 'swing', function(){
+                  $('#seventyfive img').animate(
+                  {
+                      width: $('#seventyfive img').width() +20,
+                      height: $('#seventyfive img').height() +20,
+                      'font-size': '100px',
+                      opacity: 1
+                  }, 200);
+          });
+
+      }
+
+      setInterval(function() {
+          pulse();
+      setTimeout(pulse,1000);  
+      } ,1000);
+
+
+
+    </script>
+
+
+
+  </body>
+</html>
