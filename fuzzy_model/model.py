@@ -9,7 +9,8 @@ hearthr = ctrl.Antecedent(np.arange(0, 201, 1), 'hearthr')
 #import pdb;pdb.set_trace()
 alarm = ctrl.Consequent(np.arange(0, 101, 1), 'alarm')
 
-hearthr['brady'] = fuzz.trimf(hearthr.universe, [0, 0, 60])
+#hearthr['brady'] = fuzz.trimf(hearthr.universe, [-1000, 400, 60])
+hearthr['brady'] = fuzz.trapmf(hearthr.universe, [-1000,-400, 40, 60])
 hearthr['normo'] = fuzz.trapmf(hearthr.universe, [30,60,100,130])
 hearthr['tachy'] = fuzz.trapmf(hearthr.universe, [100, 120, 400,1000])
 
@@ -30,10 +31,11 @@ rule3 = ctrl.Rule(hearthr['tachy'], alarm['alarm_tachy'])
 
 tipping_ctrl = ctrl.ControlSystem([rule1, rule2, rule3])
 tipping = ctrl.ControlSystemSimulation(tipping_ctrl)
-tipping.input['hearthr'] = 200
+tipping.input['hearthr'] = 22
 tipping.compute()
 print tipping.output['alarm']
-alarm.view(sim=tipping)
+#alarm.view(sim=tipping)
+hearthr.view()
 input("Press Enter to continue...")
 
 
