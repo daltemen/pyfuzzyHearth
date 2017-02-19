@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
@@ -32,8 +33,8 @@ tipping = ctrl.ControlSystemSimulation(tipping_ctrl)
 def fuzzy_logic_hearth(contador):
     tipping.input['hearthr'] = contador
     tipping.compute()
-    print "Porcentaje :"
-    print tipping.output['alarm']
+    print ("Porcentaje :")
+    print (tipping.output['alarm'])
     
 
 #fuzzy_logic_hearth(22)	
