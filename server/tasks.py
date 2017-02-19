@@ -7,6 +7,7 @@ import datetime as dtime
 from datetime import datetime, timedelta
 from bson.json_util import dumps, loads
 from fuzzy_logic import fuzzy_logic_hearth
+from fuzzy_hiperka import fuzzy_logic_hiperka
 from celery import Celery
 
 
@@ -74,7 +75,8 @@ def obtener_pulso_mongo():
 
 	#print "este es el contador" + str(contador)
 	#se controla en logica difusa 
-	fuzzy_logic_hearth(contador)
+	#fuzzy_logic_hearth(contador)
+	fuzzy_logic_hiperka(contador)
 
 
 @celery_1.task
